@@ -61,24 +61,24 @@ type Options struct {
 }
 
 type ConnPool struct {
-	opt *Options
+	opt *Options //连接池的参数选项。
 
-	dialErrorsNum uint32 // atomic
+	dialErrorsNum uint32 // atomic   //连接失败的错误数
 
 	lastDialErrorMu sync.RWMutex
-	lastDialError   error
+	lastDialError   error //最近一次的连接错误。
 
-	queue chan struct{}
+	queue chan struct{} //轮转队列，是一个channel结构
 
 	connsMu      sync.Mutex
-	conns        []*Conn
-	idleConns    []*Conn
-	poolSize     int
-	idleConnsLen int
+	conns        []*Conn //连接队列，维护了所有未被删除的连接
+	idleConns    []*Conn //空闲连接队列，维护了所有空闲的连接
+	poolSize     int     //连接池大小
+	idleConnsLen int     //空闲连接数
 
-	stats Stats
+	stats Stats //连接池的使用数据
 
-	_closed  uint32 // atomic
+	_closed  uint32 // atomic  //连接池是否关闭
 	closedCh chan struct{}
 }
 
