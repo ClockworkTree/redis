@@ -49,15 +49,15 @@ type Pooler interface {
 }
 
 type Options struct {
-	Dialer  func(context.Context) (net.Conn, error)
-	OnClose func(*Conn) error
+	Dialer  func(context.Context) (net.Conn, error) //新建连接的工厂函数
+	OnClose func(*Conn) error                       //关闭连接的回调函数
 
-	PoolSize           int
-	MinIdleConns       int
+	PoolSize           int //连接池大小
+	MinIdleConns       int //最少空闲连接数
 	MaxConnAge         time.Duration
-	PoolTimeout        time.Duration
-	IdleTimeout        time.Duration
-	IdleCheckFrequency time.Duration
+	PoolTimeout        time.Duration //获取连接池的超时时间
+	IdleTimeout        time.Duration //空闲连接的超时时间
+	IdleCheckFrequency time.Duration //超时空闲连接清理的时间间隔
 }
 
 type ConnPool struct {
